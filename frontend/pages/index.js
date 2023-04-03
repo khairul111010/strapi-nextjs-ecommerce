@@ -1,27 +1,25 @@
 import { PRODUCT_QUERY } from "@/lib/query";
 import Head from "next/head";
-import Link from "next/link";
 import { useQuery } from "urql";
 import Product from "@/components/Product";
 import { Gallery } from "@/styles/product/Gallery";
-import { client } from "./_app";
 
-export default function Home({ data }) {
+export default function Home() {
   // FETCH PRODUCTS
-  // const [result] = useQuery({ query: PRODUCT_QUERY });
-  // const { data, fetching, error } = result;
-  // const products = data?.products?.data;
+  const [result, refetch] = useQuery({ query: PRODUCT_QUERY });
+  const { data, fetching, error } = result;
+  const products = data?.products?.data;
 
   // console.log(data);
 
-  // // LOADING
-  // if (fetching) {
-  //   return <p>Loading...</p>;
-  // }
-  // // ERROR
-  // if (error) {
-  //   return <p>Oh no ... {error.message}</p>;
-  // }
+  // LOADING
+  if (fetching) {
+    return <p>Loading...</p>;
+  }
+  // ERROR
+  if (error) {
+    return <p>Oh no ... {error.message}</p>;
+  }
   return (
     <>
       <Head>
@@ -42,12 +40,12 @@ export default function Home({ data }) {
   );
 }
 
-export async function getServerSideProps() {
-  const { data } = await client.query(PRODUCT_QUERY).toPromise();
+// export async function getServerSideProps() {
+//   const { data } = await client.query(PRODUCT_QUERY).toPromise();
 
-  return {
-    props: {
-      data,
-    },
-  };
-}
+//   return {
+//     props: {
+//       data,
+//     },
+//   };
+// }
