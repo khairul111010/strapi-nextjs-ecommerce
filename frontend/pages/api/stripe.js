@@ -12,6 +12,12 @@ export default async function handler(req, res) {
         shipping_address_collection: {
           allowed_countries: ["US", "CA"],
         },
+        shipping_options: [
+          {
+            shipping_rate: "shr_1MwqKvLRbrYcxxv052z4lwXN",
+          },
+        ],
+        allow_promotion_codes: true,
         line_items: req.body.map((item) => {
           return {
             price_data: {
@@ -26,6 +32,10 @@ export default async function handler(req, res) {
               unit_amount: item.price * 100,
             },
             quantity: item.quantity,
+            adjustable_quantity: {
+              enabled: true,
+              minimum: 1,
+            },
           };
         }),
         success_url: `${req.headers.origin}/success`,

@@ -3,23 +3,24 @@ import Head from "next/head";
 import { useQuery } from "urql";
 import Product from "@/components/Product";
 import { Gallery } from "@/styles/product/Gallery";
+import { client } from "./_app";
 
-export default function Home() {
+export default function Home({ data }) {
   // FETCH PRODUCTS
-  const [result, refetch] = useQuery({ query: PRODUCT_QUERY });
-  const { data, fetching, error } = result;
-  const products = data?.products?.data;
+  // const [result, refetch] = useQuery({ query: PRODUCT_QUERY });
+  // const { data, fetching, error } = result;
+  // const products = data?.products?.data;
 
-  // console.log(data);
+  console.log(data);
 
   // LOADING
-  if (fetching) {
-    return <p>Loading...</p>;
-  }
+  // if (fetching) {
+  //   return <p>Loading...</p>;
+  // }
   // ERROR
-  if (error) {
-    return <p>Oh no ... {error.message}</p>;
-  }
+  // if (error) {
+  //   return <p>Oh no ... {error.message}</p>;
+  // }
   return (
     <>
       <Head>
@@ -40,12 +41,21 @@ export default function Home() {
   );
 }
 
-// export async function getServerSideProps() {
-//   const { data } = await client.query(PRODUCT_QUERY).toPromise();
+export async function getServerSideProps() {
+  const { data } = await client
+    .query(
+      PRODUCT_QUERY,
+      {},
+      {
+        fetchOptions: { mode: "no-cors" },
+        requestPolicy: "network-only",
+      }
+    )
+    .toPromise();
 
-//   return {
-//     props: {
-//       data,
-//     },
-//   };
-// }
+  return {
+    props: {
+      data,
+    },
+  };
+}

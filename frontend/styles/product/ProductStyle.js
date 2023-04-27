@@ -8,7 +8,9 @@ export const ProductStyles = styled.div`
   padding: 1.5rem;
   border-radius: 1rem;
   img {
+    height: 310px;
     width: 100%;
+    object-fit: contain;
     cursor: pointer;
   }
 `;
